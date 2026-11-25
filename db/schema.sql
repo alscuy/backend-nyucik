@@ -1,10 +1,5 @@
--- ============================================================
--- NYUCIK - Self Service Laundry | MySQL Aiven Schema
--- Jalankan: npm run migrate
--- Database mengikuti DB_NAME di .env (sudah dibuat di Aiven)
--- ============================================================
 
--- ---------------- USERS ----------------
+
 CREATE TABLE IF NOT EXISTS users (
   id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   full_name        VARCHAR(100) NOT NULL,
@@ -25,7 +20,6 @@ CREATE TABLE IF NOT EXISTS users (
   INDEX idx_users_role (role)
 );
 
--- ---------------- WASHING MACHINES ----------------
 CREATE TABLE IF NOT EXISTS washing_machines (
   id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   code         VARCHAR(10) NOT NULL UNIQUE,
@@ -38,7 +32,6 @@ CREATE TABLE IF NOT EXISTS washing_machines (
   updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- ---------------- DRYING MACHINES ----------------
 CREATE TABLE IF NOT EXISTS drying_machines (
   id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   code             VARCHAR(10) NOT NULL UNIQUE,
@@ -51,7 +44,7 @@ CREATE TABLE IF NOT EXISTS drying_machines (
   updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- ---------------- PRODUCTS ----------------
+
 CREATE TABLE IF NOT EXISTS products (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   name        VARCHAR(120) NOT NULL,
@@ -65,7 +58,7 @@ CREATE TABLE IF NOT EXISTS products (
   INDEX idx_products_active (is_active)
 );
 
--- ---------------- BOOKINGS ----------------
+ 
 CREATE TABLE IF NOT EXISTS bookings (
   id                 INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   user_id            INT UNSIGNED NOT NULL,
@@ -93,7 +86,6 @@ CREATE TABLE IF NOT EXISTS bookings (
   INDEX idx_bookings_date (booking_date)
 );
 
--- ---------------- PRODUCT ORDERS ----------------
 CREATE TABLE IF NOT EXISTS product_orders (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   user_id     INT UNSIGNED NOT NULL,
@@ -107,7 +99,6 @@ CREATE TABLE IF NOT EXISTS product_orders (
   INDEX idx_orders_user (user_id)
 );
 
--- ---------------- ANNOUNCEMENTS ----------------
 CREATE TABLE IF NOT EXISTS announcements (
   id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   title      VARCHAR(150) NOT NULL,
@@ -121,7 +112,7 @@ CREATE TABLE IF NOT EXISTS announcements (
   INDEX idx_announcements_active (is_active, start_date, end_date)
 );
 
--- ---------------- EMPLOYEES ----------------
+
 CREATE TABLE IF NOT EXISTS employees (
   id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   name       VARCHAR(100) NOT NULL,
@@ -132,7 +123,6 @@ CREATE TABLE IF NOT EXISTS employees (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- ---------------- EXPENSES (PENGELUARAN) ----------------
 CREATE TABLE IF NOT EXISTS expenses (
   id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   title        VARCHAR(150) NOT NULL,
@@ -144,7 +134,6 @@ CREATE TABLE IF NOT EXISTS expenses (
   INDEX idx_expenses_date (expense_date)
 );
 
--- ---------------- WALLET TRANSACTIONS ----------------
 CREATE TABLE IF NOT EXISTS wallet_transactions (
   id             INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   user_id        INT UNSIGNED NOT NULL,
@@ -161,7 +150,6 @@ CREATE TABLE IF NOT EXISTS wallet_transactions (
   INDEX idx_wallet_ref (reference_type, reference_id)
 );
 
--- ---------------- TOP UPS (QRIS KiPay) ----------------
 CREATE TABLE IF NOT EXISTS top_ups (
   id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   user_id       INT UNSIGNED NOT NULL,
@@ -184,7 +172,6 @@ CREATE TABLE IF NOT EXISTS top_ups (
 ALTER TABLE top_ups
   MODIFY status ENUM('PENDING','PAID','EXPIRED','FAILED','CANCELLED') NOT NULL DEFAULT 'PENDING';
 
--- ---------------- STORE SETTINGS ----------------
 CREATE TABLE IF NOT EXISTS store_settings (
   id         TINYINT UNSIGNED PRIMARY KEY,
   is_open    TINYINT(1) NOT NULL DEFAULT 1,
