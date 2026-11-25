@@ -16,7 +16,7 @@ beli produk, saldo, dan top up QRIS.
 
 ```bash
 npm install
-cp .env.example .env   # isi kredensial (DB Aiven, Cloudinary, Email, QRIS)
+# buat file .env dan isi kredensial (DB Aiven, Cloudinary, Email, KiPay)
 npm run migrate        # buat semua tabel
 npm run seed           # isi data awal + akun testing
 npm run dev
