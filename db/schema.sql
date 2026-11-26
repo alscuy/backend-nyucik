@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   start_time         TIME NOT NULL,
   end_time           TIME NOT NULL,
   total_price        DECIMAL(12,2) NOT NULL,
+  weight             INT NOT NULL DEFAULT 0,
   status             ENUM('PENDING','CONFIRMED','IN_PROGRESS','COMPLETED','CANCELLED') NOT NULL DEFAULT 'PENDING',
   photo_before_url   VARCHAR(500) NULL,
   photo_arrived_url  VARCHAR(500) NULL,

@@ -62,8 +62,8 @@ export const createBooking = async (req: AuthRequest, res: Response) => {
     const result: any = await pool.query(
       `INSERT INTO bookings
        (user_id, machine_type, washing_machine_id, drying_machine_id, booking_date,
-        start_time, end_time, total_price, status, photo_before_url)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'PENDING', ?)`,
+        start_time, end_time, total_price, weight, status, photo_before_url)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'PENDING', ?)`,
       [
         req.user!.id,
         data.machine_type,
@@ -73,6 +73,7 @@ export const createBooking = async (req: AuthRequest, res: Response) => {
         startTime,
         endTime,
         totalPrice,
+        data.weight,
         photoBeforeUrl,
       ]
     );
