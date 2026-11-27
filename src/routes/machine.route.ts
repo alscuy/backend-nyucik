@@ -5,12 +5,14 @@ import {
   createWashingMachine,
   updateWashingMachine,
   updateWashingStatus,
+  cancelWashingMachine,
   deleteWashingMachine,
   listDryingMachines,
   getDryingMachine,
   createDryingMachine,
   updateDryingMachine,
   updateDryingStatus,
+  cancelDryingMachine,
   deleteDryingMachine,
 } from "../controllers/machine.controller";
 import { authenticate, requireAdmin } from "../middlewares/auth.middleware";
@@ -24,6 +26,7 @@ router.get("/washing-machines/:id", authenticate, getWashingMachine);
 router.post("/washing-machines", adminOnly, upload.single("photo"), createWashingMachine);
 router.patch("/washing-machines/:id", adminOnly, upload.single("photo"), updateWashingMachine);
 router.patch("/washing-machines/:id/status", adminOnly, updateWashingStatus);
+router.patch("/washing-machines/:id/cancel", adminOnly, cancelWashingMachine);
 router.delete("/washing-machines/:id", adminOnly, deleteWashingMachine);
 
 router.get("/drying-machines", authenticate, listDryingMachines);
@@ -31,6 +34,7 @@ router.get("/drying-machines/:id", authenticate, getDryingMachine);
 router.post("/drying-machines", adminOnly, upload.single("photo"), createDryingMachine);
 router.patch("/drying-machines/:id", adminOnly, upload.single("photo"), updateDryingMachine);
 router.patch("/drying-machines/:id/status", adminOnly, updateDryingStatus);
+router.patch("/drying-machines/:id/cancel", adminOnly, cancelDryingMachine);
 router.delete("/drying-machines/:id", adminOnly, deleteDryingMachine);
 
 export default router;

@@ -163,7 +163,7 @@ export const payBooking = async (req: AuthRequest, res: Response) => {
         "UPDATE bookings SET status = 'CONFIRMED', paid_at = NOW() WHERE id = ?",
         [booking.id]
       );
-      await conn.query(`UPDATE ${table} SET status = 'BOOKED' WHERE id = ?`, [booking[machineColumn]]);
+      await conn.query(`UPDATE ${table} SET status = 'BOOKED', last_booked_at = NOW() WHERE id = ?`, [booking[machineColumn]]);
 
       return {
         booking_id: booking.id,

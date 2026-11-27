@@ -7,6 +7,7 @@ dotenv.config();
 
 import { testConnection } from "./config/database";
 import { errorHandler, notFoundHandler } from "./middlewares/error.middleware";
+import { startAutoCancelScheduler } from "./services/machine-auto-cancel";
 
 import authRoute from "./routes/auth.route";
 import userRoute from "./routes/user.route";
@@ -57,6 +58,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => error
 
 const start = async () => {
   await testConnection();
+  startAutoCancelScheduler();
   app.listen(PORT, () => {
     console.log(` Server berjalan di http://localhost:${PORT}`);
     console.log(`   Base URL API: /api/v1`);

@@ -101,6 +101,20 @@ export const updateWashingStatus = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const cancelWashingMachine = async (req: AuthRequest, res: Response) => {
+  try {
+    const machine: any = await queryOne("SELECT id, status FROM washing_machines WHERE id = ?", [req.params.id]);
+    if (!machine) return fail(res, "Mesin cuci tidak ditemukan", 404);
+    if (machine.status !== "BOOKED") return fail(res, "Hanya mesin berstatus BOOKED yang bisa dibatalkan", 400);
+
+    await pool.query("UPDATE washing_machines SET status = 'AVAILABLE', last_booked_at = NULL WHERE id = ?", [req.params.id]);
+    return success(res, { id: Number(req.params.id), status: "AVAILABLE" }, "Status mesin cuci berhasil dibatalkan oleh admin");
+  } catch (err: any) {
+    console.error(err);
+    return fail(res);
+  }
+};
+
 export const deleteWashingMachine = async (req: AuthRequest, res: Response) => {
   const machine: any = await queryOne("SELECT id FROM washing_machines WHERE id = ?", [req.params.id]);
   if (!machine) return fail(res, "Mesin cuci tidak ditemukan", 404);
@@ -199,6 +213,20 @@ export const updateDryingStatus = async (req: AuthRequest, res: Response) => {
     return success(res, { id: Number(req.params.id), status }, "Status mesin pengering diperbarui");
   } catch (err: any) {
     if (err.name === "ZodError") return fail(res, err.errors.map((issue: any) => issue.message).join(", "), 400);
+    console.error(err);
+    return fail(res);
+  }
+};
+
+export const cancelDryingMachine = async (req: AuthRequest, res: Response) => {
+  try {
+    const machine: any = await queryOne("SELECT id, status FROM drying_machines WHERE id = ?", [req.params.id]);
+    if (!machine) return fail(res, "Mesin pengering tidak ditemukan", 404);
+    if (machine.status !== "BOOKED") return fail(res, "Hanya mesin berstatus BOOKED yang bisa dibatalkan", 400);
+
+    await pool.query("UPDATE drying_machines SET status = 'AVAILABLE', last_booked_at = NULL WHERE id = ?", [req.params.id]);
+    return success(res, { id: Number(req.params.id), status: "AVAILABLE" }, "Status mesin pengering berhasil dibatalkan oleh admin");
+  } catch (err: any) {
     console.error(err);
     return fail(res);
   }
